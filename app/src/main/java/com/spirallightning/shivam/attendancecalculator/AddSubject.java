@@ -1,5 +1,8 @@
 package com.spirallightning.shivam.attendancecalculator;
 
+import android.content.DialogInterface;
+import android.icu.text.IDNA;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -40,9 +43,26 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
                                int pos, long id) {
         // An item was selected. You can retrieve the selected item using
         // parent.getItemAtPosition(pos)
+        //Spinner sp = (Spinner) parent;
+
+
     }
 
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
+    }
+
+    public void AddSubjectClick(View view)
+    {
+        String ErrMsg = "Lol! You got an Error!";
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage(ErrMsg)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .show();
     }
 }
