@@ -2,20 +2,28 @@ package com.spirallightning.shivam.attendancecalculator;
 
 import android.content.DialogInterface;
 import android.icu.text.IDNA;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class AddSubject extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    EditText subText;
+    EditText codeText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_subject);
+
+        subText = (EditText) findViewById(R.id.editSubject);
+        codeText = (EditText) findViewById(R.id.editCode);
 
         Spinner[] sparray = new Spinner[7];
 
@@ -55,14 +63,35 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
     public void AddSubjectClick(View view)
     {
         String ErrMsg = "Lol! You got an Error!";
-        new AlertDialog.Builder(this)
-                .setTitle("Error")
-                .setMessage(ErrMsg)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // continue with delete
-                    }
-                })
-                .show();
+
+        if (subText.getText().length() == 0 || codeText.getText().length() == 0)
+        {
+            if (subText.getText().length() == 0)
+            {
+                ErrMsg = "Please enter the name of the subject!";
+            }
+
+            if (codeText.getText().length() == 0)
+            {
+                ErrMsg = "Please enter the course code!";
+            }
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Error")
+                    .setMessage(ErrMsg)
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    })
+                    .show();
+        }
+
+        else
+        {
+
+
+        }
+
     }
 }

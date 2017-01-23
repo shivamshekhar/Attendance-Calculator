@@ -16,7 +16,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".About" />
-        <activity android:name=".AddSubject"></activity>
+        <activity android:name=".AddSubject" />
+        <activity android:name=".ViewSchedule"></activity>
     </application>
 
 </manifest>
