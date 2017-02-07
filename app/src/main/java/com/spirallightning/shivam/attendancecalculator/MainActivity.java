@@ -24,4 +24,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,AddSubject.class);
         startActivity(intent);
     }
+
+    public void UpdateAttendanceClick(View view)
+    {
+        Intent intent = new Intent(this,Update.class);
+        startActivity(intent);
+    }
 }

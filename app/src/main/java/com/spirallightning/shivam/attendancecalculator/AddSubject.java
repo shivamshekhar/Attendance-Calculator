@@ -1,7 +1,12 @@
 package com.spirallightning.shivam.attendancecalculator;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.icu.text.IDNA;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -9,8 +14,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import java.util.Locale;
+
+import static com.spirallightning.shivam.attendancecalculator.R.id.editDate;
 
 public class AddSubject extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -23,9 +34,9 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
         setContentView(R.layout.activity_add_subject);
 
         subText = (EditText) findViewById(R.id.editSubject);
-        codeText = (EditText) findViewById(R.id.editCode);
+        codeText = (EditText) findViewById(editDate);
 
-        Spinner[] sparray = new Spinner[7];
+        /*Spinner[] sparray = new Spinner[7];
 
         for(int i=0;i<7;i++)
         {
@@ -44,7 +55,7 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
             spinner.setOnItemSelectedListener(this);
 
             sparray[i] = spinner;
-        }
+        }*/
     }
 
     public void onItemSelected(AdapterView<?> parent, View view,
@@ -73,7 +84,7 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
 
             if (codeText.getText().length() == 0)
             {
-                ErrMsg = "Please enter the course code!";
+                ErrMsg = "Please enter the date!";
             }
 
             new AlertDialog.Builder(this)
@@ -94,4 +105,31 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
         }
 
     }
+
+    int year = 2017;
+    int month = 0;
+    int day = 1;
+
+    public void calendarPopup(View view)
+    {
+        showDialog(999);
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        // TODO Auto-generated method stub
+        if (id == 999) {
+            return new DatePickerDialog(this, myDateListener, year,month,day);
+        }
+        return null;
+    }
+
+    private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+            EditText edt = (EditText) findViewById(R.id.editDate);
+            edt.setText(Integer.toString(arg3) + "/" + Integer.toString(arg2 + 1) + "/" + Integer.toString(arg1));
+        }
+    };
+
 }
