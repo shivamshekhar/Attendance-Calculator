@@ -15,10 +15,15 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.util.Arrays;
 import java.util.Locale;
 
 import static com.spirallightning.shivam.attendancecalculator.R.id.editDate;
@@ -26,7 +31,10 @@ import static com.spirallightning.shivam.attendancecalculator.R.id.editDate;
 public class AddSubject extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     EditText subText;
-    EditText codeText;
+    EditText dateText;
+    CharSequence date;
+    CharSequence subjectName;
+    int weekdays[] = new int[7];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +42,7 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
         setContentView(R.layout.activity_add_subject);
 
         subText = (EditText) findViewById(R.id.editSubject);
-        codeText = (EditText) findViewById(editDate);
+        dateText = (EditText) findViewById(editDate);
 
         /*Spinner[] sparray = new Spinner[7];
 
@@ -75,14 +83,14 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
     {
         String ErrMsg = "Lol! You got an Error!";
 
-        if (subText.getText().length() == 0 || codeText.getText().length() == 0)
+        if (subText.getText().length() == 0 || dateText.getText().length() == 0)
         {
             if (subText.getText().length() == 0)
             {
                 ErrMsg = "Please enter the name of the subject!";
             }
 
-            if (codeText.getText().length() == 0)
+            if (dateText.getText().length() == 0)
             {
                 ErrMsg = "Please enter the date!";
             }
@@ -100,10 +108,42 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
 
         else
         {
+            subjectName = subText.getText();
+            for(int i = 0; i<7; i++)
+            {
+                String checkboxID = "checkBox" + (i+1);
+                int cbID = getResources().getIdentifier(checkboxID, "id", getPackageName());
 
+                CheckBox cb = (CheckBox) findViewById(cbID);
 
+                if (cb.isChecked() == true)
+                    weekdays[i] = 1;
+                else
+                    weekdays[i] = 0;
+            }
+
+            try
+            {
+                FileOutputStream fileout = openFileOutput("subs.txt", MODE_PRIVATE);
+                OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+                outputWriter.write(subjectName.toString() + "\n");
+
+                outputWriter.write(date.toString() + "\n");
+                outputWriter.write(Arrays.toString(weekdays) + "\n");
+                outputWriter.close();
+
+                //display file saved message
+                Toast.makeText(getBaseContext(), "Subject added successfully!",
+                        Toast.LENGTH_SHORT).show();
+
+                finish();
+
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
-
     }
 
     int year = 2017;
@@ -129,6 +169,7 @@ public class AddSubject extends AppCompatActivity implements AdapterView.OnItemS
         public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
             EditText edt = (EditText) findViewById(R.id.editDate);
             edt.setText(Integer.toString(arg3) + "/" + Integer.toString(arg2 + 1) + "/" + Integer.toString(arg1));
+            date = Integer.toString(arg3) + "/" + Integer.toString(arg2 + 1) + "/" + Integer.toString(arg1);
         }
     };
 
